@@ -2,7 +2,7 @@ package util;
 
 class Node<T> {
     private T value;
-    private Node<T> next;
+    private Node<T> previous;
 
     public Node(T value){
         this.value = value;
@@ -11,22 +11,22 @@ class Node<T> {
 
     public Node(T value, Node<T> next){
         this(value);
-        this.next = next;
+        this.previous = next;
     }
 
     public void setValue(T value){
         this.value = value;
     }
 
-    public void setNext(Node<T> node){
-        next = node;
+    public void setPrevious(Node<T> node){
+        previous = node;
     }
 
     public T getValue() {
         return value;
     }
 
-    public Node<T> getNext(){
-        return next;
+    public Node<T> getPrevious(){
+        return previous;
     }
 }
