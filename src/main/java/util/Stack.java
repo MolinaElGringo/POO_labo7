@@ -7,16 +7,14 @@ public class Stack<T> {
 
     Node<T> head;
     int size = 0;
-    Class<T> classT;
 
     private Iterator<T> getIterator(){
         Iterator<T> ite = new Iterator<>(head);
         return ite;
     }
 
-    public Stack(Class<T> cls){
+    public Stack(){
         head = null;
-        classT = cls;
     }
     
     public void push(T value){
@@ -41,8 +39,12 @@ public class Stack<T> {
     }
 
     public T[] getValues(){
+
+        if(head == null){
+            return null;
+        }
         
-        T[] values = (T[]) Array.newInstance(classT, size);
+        T[] values = (T[]) Array.newInstance(head.getValue().getClass(), size);
         int counter = 0;
         Iterator<T> ite = getIterator();
         while(ite.hasNext()){
