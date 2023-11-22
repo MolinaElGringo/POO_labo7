@@ -10,15 +10,53 @@ abstract class Operator {
 }
 
 class Digit extends Operator {
-    private double value;
+    private int value;
+    private JCalculator calculator;
 
-    public Digit(State s, int val){
+    public Digit(JCalculator c, State s, int val){
         super(s);
         value = val;
+        calculator = c;
     }
 
     public void execute() {
-        state.addValue(value);
+        if(calculator.getText().compareTo("0") == 0){
+            calculator.setText(value + "");
+        }
+        else{
+            calculator.setText(calculator.getText() + value);
+        }
+    }
+}
+
+class Point extends Operator{
+    JCalculator calculator;
+
+    public Point(JCalculator c, State s){
+        super(s);
+        calculator = c;
+    }
+
+
+    public void execute(){
+        calculator.setText(calculator.getText() + ".");
+    }
+}
+
+class Backspace extends Operator{
+    JCalculator calculator;
+
+    public Backspace(JCalculator c, State s){
+        super(s);
+        calculator = c;
+    }
+
+
+    public void execute(){
+        calculator.setText(calculator.getText().substring(0, calculator.getText().length() - 1));
+        if(calculator.getText().isEmpty()){
+            calculator.setText("0");
+        }
     }
 }
 
@@ -111,7 +149,7 @@ class MemoryStore extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        state.storeInMemory();
     }
 }
 
@@ -120,17 +158,20 @@ class MemoryRecall extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        state.getMemory();
     }
 }
 
 
 class Enter extends Operator{
-    public Enter(State s){
+    private JCalculator calculator;
+    public Enter(JCalculator c, State s){
         super(s);
+        calculator = c;
     }
     public void execute() {
-        // TODO
+        state.addValue(Double.parseDouble(calculator.getText()));
+        calculator.setText(0 + "");
     }
 }
 
@@ -139,7 +180,18 @@ class Negate extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        Double d = state.getValue();
+        state.addValue(d * (-1.));
+    }
+}
+
+class Inverse extends Operator{
+    public Inverse(State s){
+        super(s);
+    }
+    public void execute() {
+        Double d = state.getValue();
+        state.addValue(1 / d);
     }
 }
 

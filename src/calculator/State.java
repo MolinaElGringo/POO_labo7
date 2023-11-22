@@ -5,6 +5,7 @@ import util.Stack;
 public class State {
 
     private Stack<Double> stack = new Stack<>();
+    private Double memory = 0.;
 
     public State(){
 
@@ -20,6 +21,14 @@ public class State {
 
     public double getValue(){
         return stack.pop();
+    }
+
+    public void storeInMemory(){
+        memory = stack.pop();
+    }
+
+    public void getMemory(){
+        stack.push(memory);
     }
 
     public String[] getStackInString(){
