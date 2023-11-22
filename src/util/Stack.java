@@ -8,13 +8,13 @@ public class Stack<T> {
     Node<T> head;
     int size = 0;
 
-    private Iterator<T> getIterator(){
-        Iterator<T> ite = new Iterator<>(head);
-        return ite;
-    }
-
     public Stack(){
         head = null;
+    }
+
+    public Iterator<T> getIterator(){
+        Iterator<T> ite = new Iterator<>(head);
+        return ite;
     }
     
     public void push(T value){

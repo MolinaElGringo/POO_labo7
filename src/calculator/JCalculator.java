@@ -29,6 +29,8 @@ public class JCalculator extends JFrame
   // Contraintes pour le placement des composants graphiques
   private final GridBagConstraints constraints = new GridBagConstraints();
 
+  private State state = new State();
+
 
   // Mise a jour de l'interface apres une operation (jList et jStack)
   private void update()
@@ -75,19 +77,19 @@ public class JCalculator extends JFrame
     constraints.gridwidth = 1; // reset width
 
     // Rappel de la valeur en memoire
-    addOperatorButton("MR", 0, 1, Color.RED, new MemoryRecall());
+    addOperatorButton("MR", 0, 1, Color.RED, new MemoryRecall(state));
 
     // Stockage d'une valeur en memoire
-    addOperatorButton("MS", 1, 1, Color.RED, new MemoryStore());
+    addOperatorButton("MS", 1, 1, Color.RED, new MemoryStore(state));
 
     // Backspace
     addOperatorButton("<=", 2, 1, Color.RED, null);
 
     // Mise a zero de la valeur courante + suppression des erreurs
-    addOperatorButton("CE", 3, 1, Color.RED, new ClearError());
+    addOperatorButton("CE", 3, 1, Color.RED, new ClearError(state));
 
     // Comme CE + vide la pile
-    addOperatorButton("C",  4, 1, Color.RED, new Clear());
+    addOperatorButton("C",  4, 1, Color.RED, new Clear(state));
 
     // Boutons 1-9
     for (int i = 1; i < 10; i++) 
@@ -103,18 +105,18 @@ public class JCalculator extends JFrame
     addOperatorButton(".", 2, 5, Color.BLUE, null);
 
     // Operateurs arithmetiques a deux operandes: /, *, -, +
-    addOperatorButton("/", 3, 2, Color.RED, new Division());
-    addOperatorButton("*", 3, 3, Color.RED, new Multiplication());
-    addOperatorButton("-", 3, 4, Color.RED, new Subtraction());
-    addOperatorButton("+", 3, 5, Color.RED, new Addition());
+    addOperatorButton("/", 3, 2, Color.RED, new Division(state));
+    addOperatorButton("*", 3, 3, Color.RED, new Multiplication(state));
+    addOperatorButton("-", 3, 4, Color.RED, new Subtraction(state));
+    addOperatorButton("+", 3, 5, Color.RED, new Addition(state));
 
     // Operateurs arithmetiques a un operande: 1/x, x^2, Sqrt
-    addOperatorButton("1/x", 4, 2, Color.RED, new Negate());
-    addOperatorButton("x^2", 4, 3, Color.RED, new Power());
-    addOperatorButton("Sqrt", 4, 4, Color.RED, new SquareRoot());
+    addOperatorButton("1/x", 4, 2, Color.RED, new Negate(state));
+    addOperatorButton("x^2", 4, 3, Color.RED, new Power(state));
+    addOperatorButton("Sqrt", 4, 4, Color.RED, new SquareRoot(state));
 
     // Entree: met la valeur courante sur le sommet de la pile
-    addOperatorButton("Ent", 4, 5, Color.RED, new Enter());
+    addOperatorButton("Ent", 4, 5, Color.RED, new Enter(state));
 
     // Affichage de la pile
     JLabel jLabel = new JLabel("Stack");
