@@ -29,7 +29,9 @@ class Addition extends Operator {
     }
 
     public void execute() {
-        
+        double d1 = state.getValue();
+        double d2 = state.getValue();
+        state.addValue(d1 + d2);
     }
 }
 
@@ -38,7 +40,9 @@ class Subtraction extends Operator {
         super(s);
     }
     public void execute() {
-        // TODO
+        double d1 = state.getValue();
+        double d2 = state.getValue();
+        state.addValue(d1 - d2);
     }
 }
 
@@ -47,7 +51,9 @@ class Multiplication extends Operator {
         super(s);
     }
     public void execute() {
-        // TODO
+        double d1 = state.getValue();
+        double d2 = state.getValue();
+        state.addValue(d1 * d2);
     }
 }
 
@@ -56,7 +62,9 @@ class Division extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        double d1 = state.getValue();
+        double d2 = state.getValue();
+        state.addValue(d1 / d2);
     }
 }
 
@@ -65,7 +73,8 @@ class SquareRoot extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        double d1 = state.getValue();
+        state.addValue(Math.sqrt(d1));
     }
 }
 
@@ -74,7 +83,8 @@ class Power extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        double d1 = state.getValue();
+        state.addValue(d1 * d1);
     }
 }
 

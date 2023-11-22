@@ -22,4 +22,12 @@ public class State {
         return stack.pop();
     }
 
+    public String[] getStackInString(){
+        Double[] values = stack.getValues();
+        String[] s = new String[values.length];
+        for(int i = 0; i < values.length; ++i){
+            s[i] = values[i].toString();
+        }
+        return s;
+    }
 }

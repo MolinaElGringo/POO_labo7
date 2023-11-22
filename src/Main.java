@@ -5,8 +5,8 @@ import util.*;
 public class Main
 {
   public static void main(String ... args) {
-    //new JCalculator();
-    
+    new JCalculator();
+    /* 
     Stack<Integer> stk = new Stack<>();
     stk.push(1);
     stk.push(2);
@@ -23,5 +23,6 @@ public class Main
     while (ite.hasNext()) {
       System.out.println(ite.next());
     }
+    */
   }
 }
