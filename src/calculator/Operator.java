@@ -2,10 +2,23 @@ package calculator;
 
 abstract class Operator {
     abstract void execute();
-    private State state;
+    protected State state;
 
     public Operator(State s){
         state = s;
+    }
+}
+
+class Digit extends Operator {
+    private double value;
+
+    public Digit(State s, int val){
+        super(s);
+        value = val;
+    }
+
+    public void execute() {
+        state.addValue(value);
     }
 }
 
