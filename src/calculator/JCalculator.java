@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,15 +48,11 @@ public class JCalculator extends JFrame
     jNumber.setText(values[0]);
 
     if(values.length > 1){
-      jStack.setListData(state.getStackInString());
+      jStack.setListData(Arrays.copyOfRange(values, 1, values.length + 1));
     }
     else{
-
+      jStack.setListData(empty);
     }
-  }
-
-  private void putValueOnStack(){
-    state.addValue(getText());
   }
 
   // Ajout d'un bouton dans l'interface et de l'operation associee,
@@ -120,7 +117,7 @@ public class JCalculator extends JFrame
     addOperatorButton("+/-", 1, 5, Color.BLUE, new Negate(state));
 
     // Operateur point (chiffres apres la virgule ensuite)
-    addOperatorButton(".", 2, 5, Color.BLUE, new Point(this, state));
+    addOperatorButton(".", 2, 5, Color.BLUE, new Point(state));
 
     // Operateurs arithmetiques a deux operandes: /, *, -, +
     addOperatorButton("/", 3, 2, Color.RED, new Division(state));
@@ -134,7 +131,7 @@ public class JCalculator extends JFrame
     addOperatorButton("Sqrt", 4, 4, Color.RED, new SquareRoot(state));
 
     // Entree: met la valeur courante sur le sommet de la pile
-    addOperatorButton("Ent", 4, 5, Color.RED, new Enter(this, state));
+    addOperatorButton("Ent", 4, 5, Color.RED, new Enter(state));
 
     // Affichage de la pile
     JLabel jLabel = new JLabel("Stack");

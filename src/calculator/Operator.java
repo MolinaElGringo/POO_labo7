@@ -20,8 +20,11 @@ class Digit extends Operator {
     public void execute() {
         String actualVal = state.getValue();
 
-        if(actualVal == null){
+        if(actualVal == null || actualVal.equals("0")){
             state.addValue(value);
+        }
+        else if(actualVal.equals("**Error**")){
+            state.addValue(actualVal);
         }
         else{
             state.addValue(actualVal + value);
@@ -31,33 +34,36 @@ class Digit extends Operator {
 }
 
 class Point extends Operator{
-    JCalculator calculator;
 
-    public Point(JCalculator c, State s){
+    public Point(State s){
         super(s);
-        calculator = c;
     }
 
-
     public void execute(){
-        calculator.setText(calculator.getText() + ".");
+        String val = state.getValue();
+        if(!val.contains(".")){
+            state.addValue(val + ".");
+        }
+        else{
+            state.addValue(val);
+        }
     }
 }
 
 class Backspace extends Operator{
-    JCalculator calculator;
 
     public Backspace(JCalculator c, State s){
         super(s);
-        calculator = c;
     }
 
 
     public void execute(){
-        calculator.setText(calculator.getText().substring(0, calculator.getText().length() - 1));
-        if(calculator.getText().isEmpty()){
-            calculator.setText("0");
+        String val = state.getValue();
+        val = val.substring(0, val.length() - 1);
+        if(val.isEmpty()){
+            val = "0";
         }
+        state.addValue(val);
     }
 }
 
@@ -68,10 +74,16 @@ class Addition extends Operator {
     }
 
     public void execute() {
-        double d1 = Double.parseDouble(state.getValue());
-        double d2 = Double.parseDouble(state.getValue());
-        Double result = d1 + d2;
-        state.addValue(result.toString());
+        try{
+            Double d1 = Double.parseDouble(state.getValue());
+            Double d2 = Double.parseDouble(state.getValue());
+            Double result = d1 + d2;
+            state.addValue(result.toString());
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+            state.addValue("**Error**");
+        }
     }
 }
 
@@ -171,10 +183,8 @@ class MemoryRecall extends Operator{
 
 
 class Enter extends Operator{
-    private JCalculator calculator;
-    public Enter(JCalculator c, State s){
+    public Enter(State s){
         super(s);
-        calculator = c;
     }
     public void execute() {
         state.addValue("0");
