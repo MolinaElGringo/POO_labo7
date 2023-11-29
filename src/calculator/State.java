@@ -4,8 +4,8 @@ import util.Stack;
 
 public class State {
 
-    private Stack<Double> stack = new Stack<>();
-    private Double memory = 0.;
+    private Stack<String> stack = new Stack<>();
+    private String memory = "";
 
     public State(){
 
@@ -15,12 +15,11 @@ public class State {
 
     }
 
-    public void addValue(double val){
+    public void addValue(String val){
         stack.push(val);
     }
 
-    public Double getValue(){
-        
+    public String getValue(){ 
         return stack.pop();
     }
 
@@ -33,11 +32,6 @@ public class State {
     }
 
     public String[] getStackInString(){
-        Double[] values = stack.getValues();
-        String[] s = new String[values.length];
-        for(int i = 0; i < values.length; ++i){
-            s[i] = values[i].toString();
-        }
-        return s;
+        return stack.getValues();
     }
 }

@@ -10,21 +10,20 @@ abstract class Operator {
 }
 
 class Digit extends Operator {
-    private int value;
+    private String value;
 
     public Digit(State s, int val){
         super(s);
-        value = val;
+        value = "" + val;
     }
 
     public void execute() {
-        Double actualVal = state.getValue();
+        String actualVal = state.getValue();
 
         if(actualVal == null){
             state.addValue(value);
         }
         else{
-            actualVal *= 10;
             state.addValue(actualVal + value);
         }
 
@@ -69,9 +68,10 @@ class Addition extends Operator {
     }
 
     public void execute() {
-        double d1 = state.getValue();
-        double d2 = state.getValue();
-        state.addValue(d1 + d2);
+        double d1 = Double.parseDouble(state.getValue());
+        double d2 = Double.parseDouble(state.getValue());
+        Double result = d1 + d2;
+        state.addValue(result.toString());
     }
 }
 
@@ -80,9 +80,10 @@ class Subtraction extends Operator {
         super(s);
     }
     public void execute() {
-        double d1 = state.getValue();
-        double d2 = state.getValue();
-        state.addValue(d1 - d2);
+        double d1 = Double.parseDouble(state.getValue());
+        double d2 = Double.parseDouble(state.getValue());
+        Double result = d1 - d2;
+        state.addValue(result.toString());
     }
 }
 
@@ -91,9 +92,10 @@ class Multiplication extends Operator {
         super(s);
     }
     public void execute() {
-        double d1 = state.getValue();
-        double d2 = state.getValue();
-        state.addValue(d1 * d2);
+        double d1 = Double.parseDouble(state.getValue());
+        double d2 = Double.parseDouble(state.getValue());
+        Double result = d1 * d2;
+        state.addValue(result.toString());
     }
 }
 
@@ -102,9 +104,10 @@ class Division extends Operator{
         super(s);
     }
     public void execute() {
-        double d1 = state.getValue();
-        double d2 = state.getValue();
-        state.addValue(d1 / d2);
+        double d1 = Double.parseDouble(state.getValue());
+        double d2 = Double.parseDouble(state.getValue());
+        Double result = d1 / d2;
+        state.addValue(result.toString());
     }
 }
 
@@ -113,8 +116,9 @@ class SquareRoot extends Operator{
         super(s);
     }
     public void execute() {
-        double d1 = state.getValue();
-        state.addValue(Math.sqrt(d1));
+        Double d1 = Double.parseDouble(state.getValue());
+        d1 = Math.sqrt(d1);
+        state.addValue(d1.toString());
     }
 }
 
@@ -123,8 +127,9 @@ class Power extends Operator{
         super(s);
     }
     public void execute() {
-        double d1 = state.getValue();
-        state.addValue(d1 * d1);
+        Double d1 = Double.parseDouble(state.getValue());
+        d1 *= d1;
+        state.addValue(d1.toString());
     }
 }
 
@@ -172,8 +177,7 @@ class Enter extends Operator{
         calculator = c;
     }
     public void execute() {
-        state.addValue(Double.parseDouble(calculator.getText()));
-        calculator.setText(0 + "");
+        state.addValue("0");
     }
 }
 
@@ -182,8 +186,9 @@ class Negate extends Operator{
         super(s);
     }
     public void execute() {
-        Double d = state.getValue();
-        state.addValue(d * (-1.));
+        Double d = Double.parseDouble(state.getValue());
+        d *= -1.;
+        state.addValue(d.toString());
     }
 }
 
@@ -192,8 +197,9 @@ class Inverse extends Operator{
         super(s);
     }
     public void execute() {
-        Double d = state.getValue();
-        state.addValue(1 / d);
+        Double d = Double.parseDouble(state.getValue());
+        d = 1/d;
+        state.addValue(d.toString());
     }
 }
 

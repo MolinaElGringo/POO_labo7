@@ -28,6 +28,10 @@ public class Stack<T> {
     }
 
     public T pop(){
+
+        if(head == null){
+            return null;
+        }
         Node<T> top = head;
         head = head.getPrevious();
         --size;
