@@ -11,21 +11,23 @@ abstract class Operator {
 
 class Digit extends Operator {
     private int value;
-    private JCalculator calculator;
 
-    public Digit(JCalculator c, State s, int val){
+    public Digit(State s, int val){
         super(s);
         value = val;
-        calculator = c;
     }
 
     public void execute() {
-        if(calculator.getText().compareTo("0") == 0){
-            calculator.setText(value + "");
+        Double actualVal = state.getValue();
+
+        if(actualVal == null){
+            state.addValue(value);
         }
         else{
-            calculator.setText(calculator.getText() + value);
+            actualVal *= 10;
+            state.addValue(actualVal + value);
         }
+
     }
 }
 

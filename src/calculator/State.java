@@ -19,7 +19,8 @@ public class State {
         stack.push(val);
     }
 
-    public double getValue(){
+    public Double getValue(){
+        
         return stack.pop();
     }
 
