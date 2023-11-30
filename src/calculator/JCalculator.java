@@ -45,7 +45,14 @@ public class JCalculator extends JFrame
   private void update()
   {
     String[] values = state.getStackInString();
-    jNumber.setText(values[0]);
+    
+    if(values != null){
+        jNumber.setText(values[0]);
+    }
+    else{
+      jNumber.setText("0");
+    }
+    
 
     if(values.length > 1){
       jStack.setListData(Arrays.copyOfRange(values, 1, values.length + 1));
