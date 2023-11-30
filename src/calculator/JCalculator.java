@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.Arrays;
-import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,17 +42,15 @@ public class JCalculator extends JFrame
 
   // Mise a jour de l'interface apres une operation (jList et jStack)
   private void update()
-  {
-    String[] values = state.getStackInString();
-    
+  {    
     if(state.getCurrent() != null){
-        jNumber.setText(state.getCurrent().toString());
+        jNumber.setText(state.getCurrentIString());
     }
     else{
       jNumber.setText("0");
     }
     
-
+    String[] values = state.getStackInString();
     if(values != null){
       jStack.setListData(values);
     }

@@ -42,6 +42,8 @@ public class State {
 
     public void removeACharFromCurrent(){ currentVal = currentVal.substring(0, currentVal.length() - 1);}
     public Double getCurrent(){return Double.parseDouble(currentVal);}
+    public String getCurrentIString(){return currentVal;}
+    public void setCurrent(Double val){currentVal = val.toString();}
     public void rstCurrent(){currentVal = "0";}
     public void pushCurrent(){
         stack.push(Double.parseDouble(currentVal));
@@ -59,6 +61,10 @@ public class State {
 
 
     public String[] getStackInString(){
+        if(stack.Size() == 0){
+            return null;
+        }
+
         String[] stringStack = new String[stack.Size()];
         Iterator i = stack.getIterator();
         int counter = stack.Size();

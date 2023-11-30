@@ -63,7 +63,7 @@ abstract class DoubleOperation extends Operator {
         try {
             Double d1 = state.getCurrent();
             Double d2 = state.getValue();
-            state.addValue(operate(d1, d2));
+            state.setCurrent(operate(d1, d2));
         } catch (Exception e) {
             System.err.println(e.getMessage());
             state.setError();
@@ -127,7 +127,7 @@ abstract class UnaryOperation extends Operator {
     public final void execute() {
         try {
             Double d1 = state.getCurrent();
-            state.addValue(operate(d1));
+            state.setCurrent(operate(d1));
         } catch (Exception e) {
             System.err.println(e.getMessage());
             state.setError();
