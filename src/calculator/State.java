@@ -28,6 +28,7 @@ public class State {
     }
 
     public void getMemory(){
+        stack.pop();
         stack.push(memory);
     }
 

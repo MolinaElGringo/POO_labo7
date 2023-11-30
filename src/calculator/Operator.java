@@ -52,7 +52,7 @@ class Point extends Operator{
 
 class Backspace extends Operator{
 
-    public Backspace(JCalculator c, State s){
+    public Backspace(State s){
         super(s);
     }
 
@@ -66,48 +66,58 @@ class Backspace extends Operator{
         state.addValue(val);
     }
 }
+abstract class DoubleOperation extends Operator {
 
-class Addition extends Operator {
+    private Operator op;
 
-    public Addition(State s){
-        super(s);
+    public DoubleOperation(State s1) {
+        super(s1);
     }
 
-    public void execute() {
-        try{
+    abstract protected Double operate(Double d1, Double d2);
+
+    public final void execute() {
+        try {
             Double d1 = Double.parseDouble(state.getValue());
             Double d2 = Double.parseDouble(state.getValue());
-            Double result = d1 + d2;
-            state.addValue(result.toString());
-        }
-        catch(Exception e){
+            state.addValue(operate(d1, d2).toString());
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             state.addValue("**Error**");
         }
     }
 }
 
-class Subtraction extends Operator {
-    public Subtraction(State s){
+class Addition extends DoubleOperation{
+
+    public Addition(State s){
         super(s);
     }
-    public void execute() {
-        double d1 = Double.parseDouble(state.getValue());
-        double d2 = Double.parseDouble(state.getValue());
-        Double result = d1 - d2;
-        state.addValue(result.toString());
+
+    @Override
+    protected Double operate(Double d1, Double d2) {
+        return d1 + d2;
     }
 }
 
-class Multiplication extends Operator {
+class Subtraction extends DoubleOperation {
+    public Subtraction(State s){
+        super(s);
+    }
+    @Override
+    protected Double operate(Double d1, Double d2) {
+        return d1 - d2;
+    }
+
+}
+
+class Multiplication extends DoubleOperation {
     public Multiplication(State s){
         super(s);
     }
-    public void execute() {
-        double d1 = Double.parseDouble(state.getValue());
-        double d2 = Double.parseDouble(state.getValue());
-        Double result = d1 * d2;
-        state.addValue(result.toString());
+    @Override
+    protected Double operate(Double d1, Double d2) {
+        return d1 - d2;
     }
 }
 
@@ -140,7 +150,7 @@ class Power extends Operator{
     }
     public void execute() {
         Double d1 = Double.parseDouble(state.getValue());
-        d1 *= d1;
+        d1 = Math.pow(d1, 2);
         state.addValue(d1.toString());
     }
 }
@@ -150,7 +160,8 @@ class Clear extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        while (state.getValue() != null){}
+        state.addValue("0");
     }
 }
 
@@ -159,7 +170,8 @@ class ClearError extends Operator{
         super(s);
     }
     public void execute() {
-        // TODO
+        state.getValue();
+        state.addValue("0");
     }
 }
 
