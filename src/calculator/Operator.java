@@ -18,54 +18,37 @@ class Digit extends Operator {
     }
 
     public void execute() {
-        String actualVal = state.getValue();
-
-        if(actualVal == null || actualVal.equals("0")){
-            state.addValue(value);
+        if(state.noError()) {
+            state.appendToCurrent(value);
         }
-        else if(actualVal.equals("**Error**")){
-            state.addValue(actualVal);
-        }
-        else{
-            state.addValue(actualVal + value);
-        }
-
     }
 }
 
-class Point extends Operator{
+class Point extends Operator {
 
-    public Point(State s){
+    public Point(State s) {
         super(s);
     }
 
-    public void execute(){
-        String val = state.getValue();
-        if(!val.contains(".")){
-            state.addValue(val + ".");
-        }
-        else{
-            state.addValue(val);
+    public void execute() {
+        if (state.noError()) {
+            state.appendToCurrent(".");
         }
     }
 }
 
-class Backspace extends Operator{
 
-    public Backspace(State s){
+class Backspace extends Operator {
+
+    public Backspace(State s) {
         super(s);
     }
 
-
-    public void execute(){
-        String val = state.getValue();
-        val = val.substring(0, val.length() - 1);
-        if(val.isEmpty()){
-            val = "0";
-        }
-        state.addValue(val);
+    public void execute() {
+        state.removeACharFromCurrent();
     }
 }
+
 abstract class DoubleOperation extends Operator {
 
     private Operator op;
@@ -78,19 +61,19 @@ abstract class DoubleOperation extends Operator {
 
     public final void execute() {
         try {
-            Double d1 = Double.parseDouble(state.getValue());
-            Double d2 = Double.parseDouble(state.getValue());
-            state.addValue(operate(d1, d2).toString());
+            Double d1 = state.getCurrent();
+            Double d2 = state.getValue();
+            state.addValue(operate(d1, d2));
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            state.addValue("**Error**");
+            state.setError();
         }
     }
 }
 
-class Addition extends DoubleOperation{
+class Addition extends DoubleOperation {
 
-    public Addition(State s){
+    public Addition(State s) {
         super(s);
     }
 
@@ -101,9 +84,10 @@ class Addition extends DoubleOperation{
 }
 
 class Subtraction extends DoubleOperation {
-    public Subtraction(State s){
+    public Subtraction(State s) {
         super(s);
     }
+
     @Override
     protected Double operate(Double d1, Double d2) {
         return d1 - d2;
@@ -112,117 +96,139 @@ class Subtraction extends DoubleOperation {
 }
 
 class Multiplication extends DoubleOperation {
-    public Multiplication(State s){
+    public Multiplication(State s) {
         super(s);
     }
+
     @Override
     protected Double operate(Double d1, Double d2) {
         return d1 - d2;
     }
 }
 
-class Division extends Operator{
-    public Division(State s){
+class Division extends DoubleOperation {
+    public Division(State s) {
         super(s);
     }
-    public void execute() {
-        double d1 = Double.parseDouble(state.getValue());
-        double d2 = Double.parseDouble(state.getValue());
-        Double result = d1 / d2;
-        state.addValue(result.toString());
+
+    @Override
+    protected Double operate(Double d1, Double d2) {
+        return d2 / d1;
     }
 }
 
-class SquareRoot extends Operator{
-    public SquareRoot(State s){
+abstract class UnaryOperation extends Operator {
+    public UnaryOperation(State s) {
         super(s);
     }
-    public void execute() {
-        Double d1 = Double.parseDouble(state.getValue());
-        d1 = Math.sqrt(d1);
-        state.addValue(d1.toString());
+
+    abstract protected Double operate(Double d1);
+
+    public final void execute() {
+        try {
+            Double d1 = state.getCurrent();
+            state.addValue(operate(d1));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            state.setError();
+        }
     }
 }
 
-class Power extends Operator{
-    public Power(State s){
+class SquareRoot extends UnaryOperation {
+    public SquareRoot(State s) {
         super(s);
     }
-    public void execute() {
-        Double d1 = Double.parseDouble(state.getValue());
-        d1 = Math.pow(d1, 2);
-        state.addValue(d1.toString());
+
+    protected Double operate(Double d1) {
+        return Math.sqrt(d1);
     }
 }
 
-class Clear extends Operator{
-    public Clear(State s){
+class Power extends UnaryOperation {
+    public Power(State s) {
         super(s);
     }
-    public void execute() {
-        while (state.getValue() != null){}
-        state.addValue("0");
+
+    protected Double operate(Double d1) {
+        return d1 * d1;
     }
 }
 
-class ClearError extends Operator{
-    public ClearError(State s){
+class Negate extends UnaryOperation {
+    public Negate(State s) {
         super(s);
     }
+
+    protected Double operate(Double d1) {
+        return -d1;
+    }
+}
+
+class Inverse extends UnaryOperation {
+    public Inverse(State s) {
+        super(s);
+    }
+
+    protected Double operate(Double d1) {
+        return 1 / d1;
+    }
+}
+
+class Clear extends Operator {
+    public Clear(State s) {
+        super(s);
+    }
+
+    public void execute() {
+        while (state.getValue() != null) {
+        }
+        state.rstCurrent();
+    }
+}
+
+class ClearError extends Operator {
+    public ClearError(State s) {
+        super(s);
+    }
+
     public void execute() {
         state.getValue();
-        state.addValue("0");
+        state.rstCurrent();
     }
 }
 
-class MemoryStore extends Operator{
-    public MemoryStore(State s){
+class MemoryStore extends Operator {
+    public MemoryStore(State s) {
         super(s);
     }
+
     public void execute() {
         state.storeInMemory();
     }
 }
 
-class MemoryRecall extends Operator{
-    public MemoryRecall(State s){
+class MemoryRecall extends Operator {
+    public MemoryRecall(State s) {
         super(s);
     }
+
     public void execute() {
         state.getMemory();
     }
 }
 
 
-class Enter extends Operator{
-    public Enter(State s){
+class Enter extends Operator {
+    public Enter(State s) {
         super(s);
     }
+
     public void execute() {
-        state.addValue("0");
+        state.pushCurrent();
     }
 }
 
-class Negate extends Operator{
-    public Negate(State s){
-        super(s);
-    }
-    public void execute() {
-        Double d = Double.parseDouble(state.getValue());
-        d *= -1.;
-        state.addValue(d.toString());
-    }
-}
 
-class Inverse extends Operator{
-    public Inverse(State s){
-        super(s);
-    }
-    public void execute() {
-        Double d = Double.parseDouble(state.getValue());
-        d = 1/d;
-        state.addValue(d.toString());
-    }
-}
 
 

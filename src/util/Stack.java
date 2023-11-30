@@ -56,4 +56,8 @@ public class Stack<T> {
         }
         return values;
     }
+
+    public int Size(){
+        return size;
+    }
 }

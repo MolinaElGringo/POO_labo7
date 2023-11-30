@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -46,16 +47,16 @@ public class JCalculator extends JFrame
   {
     String[] values = state.getStackInString();
     
-    if(values != null){
-        jNumber.setText(values[0]);
+    if(state.getCurrent() != null){
+        jNumber.setText(state.getCurrent().toString());
     }
     else{
       jNumber.setText("0");
     }
     
 
-    if(values.length > 1){
-      jStack.setListData(Arrays.copyOfRange(values, 1, values.length + 1));
+    if(values != null){
+      jStack.setListData(values);
     }
     else{
       jStack.setListData(empty);
