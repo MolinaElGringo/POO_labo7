@@ -76,7 +76,7 @@ public class State {
     }
     
     /**
-     * Ajoute un String à la fin de la valeur courrante
+     * Ajoute un String à la fin de la valeur courante
      * @param s1 String à ajouter
      */
     public void appendToCurrent(String s1) {
@@ -138,7 +138,7 @@ public class State {
     }
 
     /**
-     * Inverse le signe de la valeur courrante
+     * Inverse le signe de la valeur courante
      */
     public void negateCurrent(){
         if(currentVal.contains(NEGATE)){
