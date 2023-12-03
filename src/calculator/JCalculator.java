@@ -43,12 +43,7 @@ public class JCalculator extends JFrame
   // Mise a jour de l'interface apres une operation (jList et jStack)
   private void update()
   {    
-    if(state.getCurrent() != null){
-        jNumber.setText(state.getCurrentIString());
-    }
-    else{
-      jNumber.setText("0");
-    }
+    jNumber.setText(state.getCurrentInString());
     
     String[] values = state.getStackInString();
     if(values != null){

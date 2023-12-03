@@ -57,7 +57,12 @@ public class Stack<T> {
         return values;
     }
 
-    public int Size(){
+    public int size(){
         return size;
+    }
+
+    public void emptyStack(){
+        head = null;
+        size = 0;
     }
 }

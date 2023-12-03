@@ -18,7 +18,7 @@ class Digit extends Operator {
     }
 
     public void execute() {
-        if(state.noError()) {
+        if(state.noError() && state.isUserInput()) {
             state.appendToCurrent(value);
         }
     }
@@ -31,7 +31,7 @@ class Point extends Operator {
     }
 
     public void execute() {
-        if (state.noError()) {
+        if (state.noError() && state.isUserInput()) {
             state.appendToCurrent(".");
         }
     }
@@ -45,13 +45,13 @@ class Backspace extends Operator {
     }
 
     public void execute() {
-        state.removeACharFromCurrent();
+        if(state.noError() && state.isUserInput()){
+            state.removeACharFromCurrent();
+        }
     }
 }
 
 abstract class DoubleOperation extends Operator {
-
-    private Operator op;
 
     public DoubleOperation(State s1) {
         super(s1);
@@ -59,14 +59,18 @@ abstract class DoubleOperation extends Operator {
 
     abstract protected Double operate(Double d1, Double d2);
 
-    public final void execute() {
-        try {
+    public void execute() {
+        if(state.noError()){
             Double d1 = state.getCurrent();
             Double d2 = state.getValue();
-            state.setCurrent(operate(d1, d2));
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            state.setError();
+
+            if(d1 != null && d2 != null){
+                state.setCurrent(operate(d1, d2));
+                state.setUserInput(false);
+            }
+            else{
+                state.setError();
+            }
         }
     }
 }
@@ -102,7 +106,7 @@ class Multiplication extends DoubleOperation {
 
     @Override
     protected Double operate(Double d1, Double d2) {
-        return d1 - d2;
+        return d1 * d2;
     }
 }
 
@@ -124,13 +128,16 @@ abstract class UnaryOperation extends Operator {
 
     abstract protected Double operate(Double d1);
 
-    public final void execute() {
-        try {
+    public void execute() {
+        if(state.noError()){
             Double d1 = state.getCurrent();
-            state.setCurrent(operate(d1));
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            state.setError();
+            if(d1 != null){
+                state.setCurrent(operate(d1));
+                state.setUserInput(false);
+            }
+            else{
+                state.setError();
+            }
         }
     }
 }
@@ -155,13 +162,20 @@ class Power extends UnaryOperation {
     }
 }
 
-class Negate extends UnaryOperation {
+class Negate extends Operator{
     public Negate(State s) {
         super(s);
     }
 
-    protected Double operate(Double d1) {
-        return -d1;
+    public void execute(){
+        if(state.noError()){
+            if(state.isUserInput()){
+                state.negateCurrent();
+            }
+            else{
+                state.setCurrent(-state.getCurrent());
+            }
+        }
     }
 }
 
@@ -181,9 +195,8 @@ class Clear extends Operator {
     }
 
     public void execute() {
-        while (state.getValue() != null) {
-        }
-        state.rstCurrent();
+        state.emptyStack();
+        state.rstState();
     }
 }
 
@@ -193,8 +206,7 @@ class ClearError extends Operator {
     }
 
     public void execute() {
-        state.getValue();
-        state.rstCurrent();
+        state.rstState();
     }
 }
 
@@ -204,7 +216,10 @@ class MemoryStore extends Operator {
     }
 
     public void execute() {
-        state.storeInMemory();
+        if(state.noError()){
+            state.storeInMemory();
+            state.setUserInput(true);
+        }
     }
 }
 
@@ -214,7 +229,11 @@ class MemoryRecall extends Operator {
     }
 
     public void execute() {
-        state.getMemory();
+        if(state.noError()){
+            state.getMemory();
+            state.setUserInput(false);
+        }
+        
     }
 }
 
@@ -225,7 +244,10 @@ class Enter extends Operator {
     }
 
     public void execute() {
-        state.pushCurrent();
+        if(state.noError()){
+            state.pushCurrent();
+            state.setUserInput(true);
+        }
     }
 }
 
