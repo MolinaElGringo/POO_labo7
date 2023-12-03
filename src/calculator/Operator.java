@@ -41,7 +41,11 @@ class Digit extends Operator {
     }
 
     public void execute() {
-        if(state.noError() && state.isUserInput()) {
+        if(state.noError()){
+            if(!state.isUserInput()) {
+                state.pushCurrent();
+                state.setUserInput(true);
+            }
             state.appendToCurrent(value);
         }
     }
