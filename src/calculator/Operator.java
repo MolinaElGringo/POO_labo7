@@ -62,7 +62,7 @@ abstract class DoubleOperation extends Operator {
     public void execute() {
         if(state.noError()){
             Double d1 = state.getCurrent();
-            Double d2 = state.getValue();
+            Double d2 = state.getStackValue();
 
             if(d1 != null && d2 != null){
                 state.setCurrent(operate(d1, d2));
