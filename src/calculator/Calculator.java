@@ -100,8 +100,8 @@ public class Calculator {
             }
             System.out.println(state.getCurrentInString());
         }
-
-
+        
+        scanner.close();
     }
 
     static{
