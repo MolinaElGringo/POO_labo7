@@ -65,7 +65,14 @@ public class Stack<T> {
      * Retourne les valeurs de la stacks en String
      */
     public String toString(){
-        return Arrays.toString(getValues());
+        T[] values = getValues();
+        
+        if (values == null) {
+            return "[]";
+        }
+        else{
+            return Arrays.toString(getValues());
+        }
     }
 
     /**

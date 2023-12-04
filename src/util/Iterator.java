@@ -24,8 +24,14 @@ public class Iterator<T>{
      * @return T
      */
     public T next(){
-        value = value.getPrevious();
-        return value.getValue();
+
+        if(!hasNext()){
+            return null;
+        }
+        else{
+            value = value.getPrevious();
+            return value.getValue();
+        }
     }
 
     /**
