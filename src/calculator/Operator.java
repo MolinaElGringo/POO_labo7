@@ -397,7 +397,3 @@ class Enter extends Operator {
         }
     }
 }
-
-
-
-

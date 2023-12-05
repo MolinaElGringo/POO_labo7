@@ -16,8 +16,12 @@ import java.util.Scanner;
 public class Calculator {
     private static State state;
     private static Map<String,Operator> operationsMap;
-    private static final String[] opeName = {"+", "-", "*", "/", "POW", "SQRT", "NEG", "INV", "MS", "MR", "C", "CE", "HELP", "EXIT"};
-    private enum opeEnum {ADD, SUB, MULT, DIV, POW, SQRT, NEG, INV, MS, MR, C, CE, HELP, EXIT};
+    private static final String[] opeName = 
+        {"+", "-", "*", "/", "POW", "SQRT", "NEG", 
+        "INV", "MS", "MR", "C", "CE", "HELP", "EXIT"};
+        
+    private enum opeEnum {ADD, SUB, MULT, DIV, POW, SQRT,
+         NEG, INV, MS, MR, C, CE, HELP, EXIT};
 
     /**
      * Converti un string en Double
